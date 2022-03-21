@@ -32,8 +32,8 @@ public class Pedido {
     @Column(name = "vl_pedido", columnDefinition = "Decimal(10,2)", nullable = false)
     private double valorPedido;
 
-    @Column(name = "vl_quantidade", length = 11, nullable = false)
-    private int quantidade;
+    @Column(name = "vl_quantidade", columnDefinition = "Real", length = 11, nullable = false)
+    private double quantidade;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_consumidor", foreignKey = @ForeignKey(name = "fk_pedido_consumidor"), nullable = false)
@@ -85,7 +85,7 @@ public class Pedido {
 	this.valorPedido = valorPedido;
     }
 
-    public int getQuantidade() {
+    public double getQuantidade() {
 	return quantidade;
     }
 
