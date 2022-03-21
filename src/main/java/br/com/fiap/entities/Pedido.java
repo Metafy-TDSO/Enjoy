@@ -3,6 +3,7 @@ package br.com.fiap.entities;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,21 +22,21 @@ public class Pedido {
     @Column(name = "id_pedido")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_comanda", foreignKey = @ForeignKey(name = "fk_comanda_pedido"), nullable = false)
     private Comanda comanda;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_bebida", foreignKey = @ForeignKey(name = "fk_bebida_pedido"), nullable = false)
     private Bebida bebida;
 
     @Column(name = "vl_pedido", columnDefinition = "Decimal(10,2)", nullable = false)
-    private double valorPedido;
+    private Double valorPedido;
 
     @Column(name = "vl_quantidade", columnDefinition = "Real", length = 11, nullable = false)
-    private double quantidade;
+    private Double quantidade;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_consumidor", foreignKey = @ForeignKey(name = "fk_pedido_consumidor"), nullable = false)
     private Consumidor consumidor;
 
@@ -43,7 +44,8 @@ public class Pedido {
 
     }
 
-    public Pedido(int id, Comanda comanda, Bebida bebida, double valorPedido, int quantidade, Consumidor consumidor) {
+    public Pedido(int id, Comanda comanda, Bebida bebida, Double valorPedido, Double quantidade,
+	    Consumidor consumidor) {
 	super();
 	this.id = id;
 	this.comanda = comanda;
@@ -77,11 +79,11 @@ public class Pedido {
 	this.bebida = bebida;
     }
 
-    public double getValorPedido() {
+    public Double getValorPedido() {
 	return valorPedido;
     }
 
-    public void setValorPedido(double valorPedido) {
+    public void setValorPedido(Double valorPedido) {
 	this.valorPedido = valorPedido;
     }
 
@@ -89,7 +91,7 @@ public class Pedido {
 	return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Double quantidade) {
 	this.quantidade = quantidade;
     }
 
