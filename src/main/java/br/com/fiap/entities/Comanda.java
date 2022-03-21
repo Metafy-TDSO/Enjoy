@@ -30,7 +30,7 @@ public class Comanda {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataEntrada;
 
-    @Column(name = "vl_valor", scale = 2, precision = 10)
+    @Column(name = "vl_valor", columnDefinition = "Decimal(10,2)")
     private double valorComanda;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

@@ -29,7 +29,7 @@ public class Pedido {
     @JoinColumn(name = "id_bebida", foreignKey = @ForeignKey(name = "fk_bebida_pedido"), nullable = false)
     private Bebida bebida;
 
-    @Column(name = "vl_pedido", precision = 10, scale = 2, nullable = false)
+    @Column(name = "vl_pedido", columnDefinition = "Decimal(10,2)", nullable = false)
     private double valorPedido;
 
     @Column(name = "vl_quantidade", length = 11, nullable = false)

@@ -25,7 +25,7 @@ public class Bebida {
     @Column(name = "tp_estilo", nullable = false, length = 45)
     private String estilo;
 
-    @Column(name = "vl_bebida", scale = 2, precision = 10)
+    @Column(name = "vl_bebida", nullable = false, columnDefinition = "Decimal(10,2)")
     private double valorBebida;
 
     @OneToMany(mappedBy = "bebida")
