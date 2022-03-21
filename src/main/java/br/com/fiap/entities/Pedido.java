@@ -7,125 +7,126 @@ import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_pedido")
+@Table(name = "tb_pedido", indexes = { @Index(columnList = "id_bebida", name = "idx_bebida_pedido"),
+	@Index(columnList = "id_comanda, id_consumidor", name = "idx_comanda_consumidor") })
 public class Pedido {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pedido")
+    private int id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_pedido")
-	private int id;
-	
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "id_comanda", foreignKey = @ForeignKey(name = "fk_comanda_pedido"), nullable = false)
-	private Comanda comanda;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_comanda", foreignKey = @ForeignKey(name = "fk_comanda_pedido"), nullable = false)
+    private Comanda comanda;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "id_bebida", foreignKey = @ForeignKey(name = "fk_bebida_pedido"), nullable = false)
-	private Bebida bebida;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_bebida", foreignKey = @ForeignKey(name = "fk_bebida_pedido"), nullable = false)
+    private Bebida bebida;
 
-	@Column(name = "vl_pedido")
-	private double valorPedido;
+    @Column(name = "vl_pedido", precision = 10, scale = 2, nullable = false)
+    private double valorPedido;
 
-	@Column(name = "vl_quantidade")
-	private int quantidade;
+    @Column(name = "vl_quantidade", length = 11, nullable = false)
+    private int quantidade;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "id_consumidor", foreignKey = @ForeignKey(name = "fk_pedido_consumidor"), nullable = false)
-	private Consumidor consumidor;
-	
-	public Pedido() {
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_consumidor", foreignKey = @ForeignKey(name = "fk_pedido_consumidor"), nullable = false)
+    private Consumidor consumidor;
 
-	}
+    public Pedido() {
 
-	public Pedido(int id, Comanda comanda, Bebida bebida, double valorPedido, int quantidade, Consumidor consumidor) {
-		super();
-		this.id = id;
-		this.comanda = comanda;
-		this.bebida = bebida;
-		this.valorPedido = valorPedido;
-		this.quantidade = quantidade;
-		this.consumidor = consumidor;
-	}
+    }
 
-	public int getId() {
-		return id;
-	}
+    public Pedido(int id, Comanda comanda, Bebida bebida, double valorPedido, int quantidade, Consumidor consumidor) {
+	super();
+	this.id = id;
+	this.comanda = comanda;
+	this.bebida = bebida;
+	this.valorPedido = valorPedido;
+	this.quantidade = quantidade;
+	this.consumidor = consumidor;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+	return id;
+    }
 
-	public Comanda getComanda() {
-		return comanda;
-	}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-	public void setComanda(Comanda comanda) {
-		this.comanda = comanda;
-	}
+    public Comanda getComanda() {
+	return comanda;
+    }
 
-	public Bebida getBebida() {
-		return bebida;
-	}
+    public void setComanda(Comanda comanda) {
+	this.comanda = comanda;
+    }
 
-	public void setBebida(Bebida bebida) {
-		this.bebida = bebida;
-	}
+    public Bebida getBebida() {
+	return bebida;
+    }
 
-	public double getValorPedido() {
-		return valorPedido;
-	}
+    public void setBebida(Bebida bebida) {
+	this.bebida = bebida;
+    }
 
-	public void setValorPedido(double valorPedido) {
-		this.valorPedido = valorPedido;
-	}
+    public double getValorPedido() {
+	return valorPedido;
+    }
 
-	public int getQuantidade() {
-		return quantidade;
-	}
+    public void setValorPedido(double valorPedido) {
+	this.valorPedido = valorPedido;
+    }
 
-	public void setQuantidade(int quantidade) {
-		this.quantidade = quantidade;
-	}
+    public int getQuantidade() {
+	return quantidade;
+    }
 
-	public Consumidor getConsumidor() {
-		return consumidor;
-	}
+    public void setQuantidade(int quantidade) {
+	this.quantidade = quantidade;
+    }
 
-	public void setConsumidor(Consumidor consumidor) {
-		this.consumidor = consumidor;
-	}
+    public Consumidor getConsumidor() {
+	return consumidor;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
-	}
+    public void setConsumidor(Consumidor consumidor) {
+	this.consumidor = consumidor;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pedido other = (Pedido) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + id;
+	return result;
+    }
 
-	@Override
-	public String toString() {
-		return "Pedido [id=" + id + ", comanda=" + comanda + ", bebida=" + bebida + ", valorPedido=" + valorPedido
-				+ ", quantidade=" + quantidade + ", consumidor=" + consumidor + "]";
-	}
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	Pedido other = (Pedido) obj;
+	if (id != other.id)
+	    return false;
+	return true;
+    }
+
+    @Override
+    public String toString() {
+	return "Pedido [id=" + id + ", comanda=" + comanda + ", bebida=" + bebida + ", valorPedido=" + valorPedido
+		+ ", quantidade=" + quantidade + ", consumidor=" + consumidor + "]";
+    }
 
 }
