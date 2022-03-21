@@ -16,7 +16,7 @@ import javax.persistence.UniqueConstraint;
 public class Consumidor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
+    @Column(name = "id_consumidor")
     private int id;
 
     @Column(name = "nr_telefone", nullable = false, length = 11)
