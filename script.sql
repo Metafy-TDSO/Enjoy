@@ -30,6 +30,12 @@ DEFAULT CHARACTER SET = utf8;
 
 CREATE INDEX `idx_bebida` ON `metafy`.`tb_bebida` (`tp_estilo` ASC, `tp_tipo` ASC);
 
+INSERT INTO `metafy`.`tb_bebida` (`tp_tipo`, `tp_estilo`, `vl_bebida`) VALUES ('Schornstein', 'Bock', '38.24');
+INSERT INTO `metafy`.`tb_bebida` (`tp_tipo`, `tp_estilo`, `vl_bebida`) VALUES ('Konigs', 'Bock', '30.16');
+INSERT INTO `metafy`.`tb_bebida` (`tp_tipo`, `tp_estilo`, `vl_bebida`) VALUES ('Patagonia', 'Pilsen', '17.56');
+INSERT INTO `metafy`.`tb_bebida` (`tp_tipo`, `tp_estilo`, `vl_bebida`) VALUES ('Leopoldina', 'Pilsen', '32.78');
+INSERT INTO `metafy`.`tb_bebida` (`tp_tipo`, `tp_estilo`, `vl_bebida`) VALUES ('Biritis', 'Vienna Lager', '28.73');
+INSERT INTO `metafy`.`tb_bebida` (`tp_tipo`, `tp_estilo`, `vl_bebida`) VALUES ('Clube 12', 'Vienna Lager', '31.71');
 
 -- -----------------------------------------------------
 -- Table `metafy`.`tb_consumidor`
@@ -44,6 +50,10 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 CREATE UNIQUE INDEX `un_nr_telefone` ON `metafy`.`tb_consumidor` (`nr_telefone` ASC);
+
+INSERT INTO `metafy`.`tb_consumidor` (`nr_telefone`) VALUES ('11988900772');
+INSERT INTO `metafy`.`tb_consumidor` (`nr_telefone`) VALUES ('11928374823');
+INSERT INTO `metafy`.`tb_consumidor` (`nr_telefone`) VALUES ('11999182733');
 
 
 -- -----------------------------------------------------
@@ -66,8 +76,14 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 CREATE INDEX `idx_pedido_consumidor` ON `metafy`.`tb_comanda` (`id_consumidor` ASC);
-
 CREATE INDEX `idx_dt_entrada` ON `metafy`.`tb_comanda` (`dt_entrada` DESC);
+
+INSERT INTO `metafy`.`tb_comanda` (`id_consumidor`, `dt_entrada`) VALUES ('1', '2022-03-21 18:03:21');
+INSERT INTO `metafy`.`tb_comanda` (`id_consumidor`, `dt_entrada`) VALUES ('1', '2022-03-20 19:45:30');
+INSERT INTO `metafy`.`tb_comanda` (`id_consumidor`, `dt_entrada`) VALUES ('1', '2022-01-01 23:14:50');
+INSERT INTO `metafy`.`tb_comanda` (`id_consumidor`, `dt_entrada`) VALUES ('2', '2021-08-13 12:01:48');
+INSERT INTO `metafy`.`tb_comanda` (`id_consumidor`, `dt_entrada`) VALUES ('3', '2022-03-19 11:01:00');
+
 
 
 -- -----------------------------------------------------
@@ -81,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `metafy`.`tb_pedido` (
   `id_bebida` INT(11) NOT NULL,
   `id_consumidor` INT(11) NOT NULL,
   `vl_pedido` DECIMAL(10,2) NOT NULL,
-  `vl_quantidade` INT(11) NOT NULL,
+  `vl_quantidade` REAL NOT NULL,
   PRIMARY KEY (`id_pedido`, `id_comanda`, `id_bebida`, `id_consumidor`),
   CONSTRAINT `fk_bebida_pedido`
     FOREIGN KEY (`id_bebida`)
@@ -99,6 +115,11 @@ DEFAULT CHARACTER SET = utf8;
 CREATE INDEX `idx_bebida_pedido` ON `metafy`.`tb_pedido` (`id_bebida` ASC);
 
 CREATE INDEX `idx_comanda_consumidor_pedido` ON `metafy`.`tb_pedido` (`id_comanda` ASC, `id_consumidor` ASC);
+
+INSERT INTO `metafy`.`tb_pedido` (`id_comanda`, `id_bebida`, `id_consumidor`, `vl_pedido`, `vl_quantidade`) VALUES ('1', '6', '1', '35.51', '1.1245');
+INSERT INTO `metafy`.`tb_pedido` (`id_comanda`, `id_bebida`, `id_consumidor`, `vl_pedido`, `vl_quantidade`) VALUES ('1', '1', '1', '13.38', '0.35');
+INSERT INTO `metafy`.`tb_pedido` (`id_comanda`, `id_bebida`, `id_consumidor`, `vl_pedido`, `vl_quantidade`) VALUES ('4', '4', '2', '22.94', '0.7');
+INSERT INTO `metafy`.`tb_pedido` (`id_comanda`, `id_bebida`, `id_consumidor`, `vl_pedido`, `vl_quantidade`) VALUES ('2', '1', '5', '41.04', '0.7');
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
