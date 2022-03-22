@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,21 +31,20 @@ public class Comanda {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataEntrada;
 
-    @Column(name = "vl_valor", columnDefinition = "Decimal(10,2)")
-    private double valorComanda;
+    @Column(name = "vl_valor", columnDefinition = "Decimal(10,2)", nullable = true)
+    private Double valorComanda;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_consumidor", foreignKey = @ForeignKey(name = "fk_comanda_consumidor"), nullable = false)
     private Consumidor consumidor;
 
-    @OneToMany(mappedBy = "comanda")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "comanda", fetch = FetchType.EAGER)
     private List<Pedido> pedidos;
 
     public Comanda() {
-
     }
 
-    public Comanda(int id, Date dataEntrada, double valorComanda, Consumidor consumidor, List<Pedido> pedidos) {
+    public Comanda(int id, Date dataEntrada, Double valorComanda, Consumidor consumidor, List<Pedido> pedidos) {
 	super();
 	this.id = id;
 	this.dataEntrada = dataEntrada;
@@ -69,11 +69,11 @@ public class Comanda {
 	this.dataEntrada = dataEntrada;
     }
 
-    public double getValorComanda() {
+    public Double getValorComanda() {
 	return valorComanda;
     }
 
-    public void setValorComanda(double valorComanda) {
+    public void setValorComanda(Double valorComanda) {
 	this.valorComanda = valorComanda;
     }
 

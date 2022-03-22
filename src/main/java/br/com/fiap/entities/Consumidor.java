@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,10 +23,10 @@ public class Consumidor {
     @Column(name = "nr_telefone", nullable = false, length = 11)
     private String telefone;
 
-    @OneToMany(mappedBy = "consumidor")
+    @OneToMany(mappedBy = "consumidor", fetch = FetchType.LAZY)
     private List<Comanda> comandas;
 
-    @OneToMany(mappedBy = "consumidor")
+    @OneToMany(mappedBy = "consumidor", fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
 
     public Consumidor() {
