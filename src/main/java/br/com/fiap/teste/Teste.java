@@ -13,11 +13,11 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 import br.com.fiap.entities.Bebida;
 import br.com.fiap.entities.Comanda;
 import br.com.fiap.entities.Consumidor;
+import br.com.fiap.entities.Pedido;
 
 public class Teste {
 
@@ -27,18 +27,18 @@ public class Teste {
 	EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("enjoy");
 	EntityManager em = fabrica.createEntityManager();
 
-//	System.out.println("Digite o telefone: ");
-//	String telefone = leitor.next() + leitor.nextLine();
+	System.out.println("Digite o telefone: ");
+	String telefone = leitor.next() + leitor.nextLine();
 
-//	leitor.close();
-	String telefone = "11988900772";
+	leitor.close();
+
 	Consumidor consumidor = em.createQuery("FROM Consumidor WHERE telefone = :telefone", Consumidor.class)
 		.setParameter("telefone", telefone).getSingleResult();
 
 	if (consumidor == null) {
 	    em.close();
 	    fabrica.close();
-	    System.out.println("Consumidor não encontrado.");
+	    System.out.println("Consumidor nao encontrado.");
 	    System.exit(0);
 	}
 
@@ -54,26 +54,45 @@ public class Teste {
 	List<String> datasEntrada = new ArrayList<String>();
 	Double somaValor = 0.0;
 
-	Bebida bebidaFavorita = null;
+	List<Integer> bebidas = new ArrayList<Integer>();
 
-	try {
-	    Query query = em.createNativeQuery(
-		    "SELECT bd.id_bebida as id, " + "bd.tp_tipo as tipo, " + "bd.tp_estilo as estilo, "
-			    + "bd.vl_bebida as valorBebida, " + "SUM(pd.vl_quantidade) as quantidadeBebida "
-			    + "FROM tb_pedido pd " + "LEFT JOIN tb_bebida bd ON pd.id_bebida = bd.id_bebida "
-			    + "WHERE pd.id_consumidor = :id_consumidor " + "GROUP BY bd.id_bebida "
-			    + "ORDER BY quantidadeBebida DESC " + "LIMIT 1",
-		    Bebida.class);
-	    query.setParameter("id_consumidor", consumidor.getId());
-	    Object result = query.getSingleResult();
-	    System.out.println("[id_bebida]" + result);
-	    bebidaFavorita = (Bebida) result;
-	} catch (Exception exception) {
-	    throw new Error("Consumidor nao tem uma bebida favorita.");
+	List<Pedido> pedidos = consumidor.getPedidos();
+
+	for (Pedido pedido : pedidos) {
+	    bebidas.add(pedido.getBebida().getId());
 	}
 
-//	String estiloFavorito= query.get("tp_estilo");
-//	Bebida bebidaFavorita	
+	Set<Integer> distinctBebidas = new HashSet<Integer>(bebidas);
+	List<Double> somaValoresBebidas = new ArrayList<Double>();
+
+	int c = 0;
+	Integer idBebidaFav = null;
+
+	for (Integer d : distinctBebidas) {
+	    somaValoresBebidas.add(0.0);
+	    if (c == 0) {
+		idBebidaFav = d;
+	    }
+
+	    for (int i = 0; i < pedidos.size(); i++) {
+		if (bebidas.get(i) == d) {
+		    somaValoresBebidas.set(c, pedidos.get(i).getQuantidade());
+		}
+	    }
+	    c++;
+	}
+
+	Double vaBebidaFav = somaValoresBebidas.get(0);
+	c = 0;
+	for (Integer d : distinctBebidas) {
+	    if (vaBebidaFav < somaValoresBebidas.get(c)) {
+		vaBebidaFav = somaValoresBebidas.get(c);
+		idBebidaFav = d;
+	    }
+	    c++;
+	}
+
+	Bebida bebidaFav = em.find(Bebida.class, idBebidaFav);
 
 	for (Comanda comanda : comandas) {
 	    Calendar calendar = Calendar.getInstance();
@@ -105,18 +124,17 @@ public class Teste {
 
 	Double mediaValores = somaValor / comandas.toArray().length;
 
-	System.out.println("Consumidor: " + consumidor.toString());
+	System.out.println("\nConsumidor: " + consumidor.toString());
 
-	System.out.println("Data da ultima visita: " + simpleDateFormat.format(dataUltimaVisita));
+	System.out.println("\nData da ultima visita: " + simpleDateFormat.format(dataUltimaVisita));
 
-	System.out.println("Frequencia mensal: " + frequencia);
+	System.out.println("\nFrequencia mensal: " + frequencia);
 
-	System.out.println("Ticket medio: R$" + String.format("%.2f", mediaValores));
+	System.out.println("\nTicket medio: R$" + String.format("%.2f", mediaValores));
 
-	System.out.println("Bebida favorita: " + bebidaFavorita.toString());
+	System.out.println("\nBebida favorita:\n\nEstilo: " + bebidaFav.getEstilo() + "\nTipo: " + bebidaFav.getTipo());
 
 	em.close();
 	fabrica.close();
-
     }
 }
