@@ -121,6 +121,10 @@ INSERT INTO `metafy`.`tb_pedido` (`id_comanda`, `id_bebida`, `id_consumidor`, `v
 INSERT INTO `metafy`.`tb_pedido` (`id_comanda`, `id_bebida`, `id_consumidor`, `vl_pedido`, `vl_quantidade`) VALUES ('4', '4', '2', '22.94', '0.7');
 INSERT INTO `metafy`.`tb_pedido` (`id_comanda`, `id_bebida`, `id_consumidor`, `vl_pedido`, `vl_quantidade`) VALUES ('2', '1', '5', '41.04', '0.7');
 
+UPDATE `metafy`.`tb_comanda` SET `vl_valor` = '48.89' WHERE (`id_comanda` = '1') and (`id_consumidor` = '1');
+UPDATE `metafy`.`tb_comanda` SET `vl_valor` = '22.94' WHERE (`id_comanda` = '4') and (`id_consumidor` = '2');
+UPDATE `metafy`.`tb_comanda` SET `vl_valor` = '41.04' WHERE (`id_comanda` = '2') and (`id_consumidor` = '5');
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
