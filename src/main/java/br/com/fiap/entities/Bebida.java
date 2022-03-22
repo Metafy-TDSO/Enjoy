@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,15 +27,15 @@ public class Bebida {
     private String estilo;
 
     @Column(name = "vl_bebida", nullable = false, columnDefinition = "Decimal(10,2)")
-    private double valorBebida;
+    private Double valorBebida;
 
-    @OneToMany(mappedBy = "bebida")
+    @OneToMany(mappedBy = "bebida", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
 
     public Bebida() {
     }
 
-    public Bebida(int id, String tipo, String estilo, double valorBebida, List<Pedido> pedidos) {
+    public Bebida(int id, String tipo, String estilo, Double valorBebida, List<Pedido> pedidos) {
 	super();
 	this.id = id;
 	this.tipo = tipo;
@@ -67,11 +68,11 @@ public class Bebida {
 	this.estilo = estilo;
     }
 
-    public double getValorBebida() {
+    public Double getValorBebida() {
 	return valorBebida;
     }
 
-    public void setValorBebida(double valorBebida) {
+    public void setValorBebida(Double valorBebida) {
 	this.valorBebida = valorBebida;
     }
 
